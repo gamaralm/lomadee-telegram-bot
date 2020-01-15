@@ -1,5 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 
+import api from './services/api';
 import telegramConfig from './config/telegram';
 
 class App {
@@ -10,9 +11,7 @@ class App {
   }
 
   registerHandlers() {
-    this.bot.onText(/\/ofertas/, message => {
-      this.bot.sendMessage(message.chat.id, 'teste');
-    });
+    this.bot.onText(/\/ofertas/, async message => {});
   }
 }
 
