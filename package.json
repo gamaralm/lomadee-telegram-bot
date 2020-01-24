@@ -5,7 +5,10 @@
   "author": "Gustavo Amaral",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node dist/app.js",
+    "deploy": "yarn build && yarn start"
   },
   "dependencies": {
     "axios": "^0.19.1",
