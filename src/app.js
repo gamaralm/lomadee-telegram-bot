@@ -48,7 +48,7 @@ class App {
     this.bot.onText(/\/\d+ (.+)/, (msg, match) => this.getOffers(msg, match));
     this.bot.on('text', msg => this.default(msg));
 
-    this.bot.on('polling_error', msg => this.error(msg));
+    this.bot.on('polling_error', error => console.log(error.response.body));
   }
 
   default(msg) {
@@ -87,15 +87,6 @@ class App {
     this.bot.sendMessage(msg.chat.id, text, {
       parse_mode: 'Markdown',
     });
-  }
-
-  error(msg) {
-    const errorMessage =
-      'Opa, tive um probleminha aqui! Meu servidor pode estar fora do ar ' +
-      'ou há alguma falha no meu sistema! Por favor, tente novamente ' +
-      'mais tarde!';
-
-    this.bot.sendMessage(msg.chat.id, errorMessage);
   }
 
   getCategories(msg) {
