@@ -1,3 +1,6 @@
+import 'dotenv/config';
+import express from 'express';
+import bodyParser from 'body-parser';
 import TelegramBot from 'node-telegram-bot-api';
 
 import api from './services/api';
@@ -6,6 +9,7 @@ import { formatOfferMessage } from './util/format';
 
 class App {
   constructor() {
+    this.server = express();
     this.bot = new TelegramBot(telegramConfig.token, telegramConfig.options);
 
     this.categories = [
@@ -24,10 +28,20 @@ class App {
       { id: 2852, name: 'TV' },
     ];
 
+    this.middlewares();
     this.registerHandlers();
   }
 
+  middlewares() {
+    this.server.use(bodyParser.json());
+  }
+
   registerHandlers() {
+    this.server.get(`/bot${telegramConfig.token}`, (req, res) => {
+      this.bot.processUpdate(req.body);
+      res.sendStatus(200);
+    });
+
     this.bot.onText(/\/start/, msg => this.welcome(msg));
     this.bot.onText(/\/help/, msg => this.help(msg));
     this.bot.onText(/\/categorias/, msg => this.getCategories(msg));
@@ -145,4 +159,4 @@ class App {
   }
 }
 
-export default new App();
+export default new App().server;
